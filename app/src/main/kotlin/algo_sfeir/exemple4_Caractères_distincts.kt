@@ -8,16 +8,13 @@ fun main() {
 }
 
 fun longestDisctinctChars(chaine: String): String {
-    var res = ""
+    var result = ""
     val distinctCharStringBuilder: TreeSet<Char> = TreeSet()
     chaine.forEach { char ->
         if (distinctCharStringBuilder.add(char)) return@forEach
-        val size = distinctCharStringBuilder.size
-        if (size <= res.length) return@forEach
-
-        res = distinctCharStringBuilder.toCharArray().concatToString()
-            .substring(0 until size - 1)
+        if (distinctCharStringBuilder.size <= result.length) return@forEach
+        result = distinctCharStringBuilder.toCharArray().concatToString()
         distinctCharStringBuilder.clear()
     }
-    return res
+    return result
 }
