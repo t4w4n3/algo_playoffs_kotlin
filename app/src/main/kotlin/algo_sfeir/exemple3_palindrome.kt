@@ -1,10 +1,10 @@
 package algo_sfeir
 
 fun main() {
-    val tableau = arrayOf("kkaay", "rootr", "ee", "e")
+    val tableau = arrayOf("kkaay", "rootr", "ee", "e", "")
     val result = tableau.map(::findPalindrom)
     println(result)
-    assert(result == listOf("akyka", "ortro", "ee", "e"))
+    assert(result == listOf("akyka", "ortro", "ee", "e", ""))
 }
 
 fun findPalindrom(str: String): String {
