@@ -23,8 +23,7 @@ fun findPalindrom(str: String): String {
         identicalCharsEvenLists += uniqueIdenticalCharsOddList
     }
     identicalCharsEvenLists.forEach { identicalCharsEvenList ->
-        identicalCharsEvenList.indices.forEach { index ->
-            val char = identicalCharsEvenList[index]
+        identicalCharsEvenList.forEachIndexed { index, char ->
             if (index.mod(2) == 0) {
                 stringBuilder.insert(0, char)
             } else {
