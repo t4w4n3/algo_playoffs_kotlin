@@ -1,4 +1,4 @@
-package algo_sfeir
+package algo
 
 fun main() {
     val tableau = arrayOf("kkaay", "rootr", "ee", "e", "")

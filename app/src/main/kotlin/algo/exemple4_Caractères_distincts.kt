@@ -1,4 +1,4 @@
-package algo_playoffs
+package algo
 
 import java.util.TreeSet
 

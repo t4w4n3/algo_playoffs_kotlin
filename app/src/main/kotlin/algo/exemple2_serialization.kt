@@ -1,4 +1,4 @@
-package algo_playoffs
+package algo
 
 import java.io.ByteArrayOutputStream
 import java.io.ObjectInputStream

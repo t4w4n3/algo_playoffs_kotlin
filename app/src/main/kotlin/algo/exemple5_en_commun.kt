@@ -1,4 +1,4 @@
-package algo_sfeir
+package algo
 
 fun main() {
     val list1 = "aeeeb".toCharArray().toList()
