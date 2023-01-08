@@ -24,20 +24,20 @@ private data class MutableInt(var value: Int = 0) {
 // Le nouvel élément est automatiquement et efficacement placé au bon endroit dans l'index
 // On recommence jusqu'à ce que l'index soit vide
 fun printMatrixElementsInOrder(matrix: Array<IntArray>) {
-    val lineIndexToCursor: MutableMap<Int, MutableInt> = matrix.indices.associateWithTo(mutableMapOf()) { MutableInt() }
+    val lineIndexToCursor: MutableMap<Int, MutableInt> = mutableMapOf()
     val lineIndexToValueAtItsCurrentCursor: NavigableSet<Pair<Int, Int>> = matrix
         .asSequence()
         .mapIndexed { index, intArray -> index to intArray[0] }
         .toCollection(TreeSet(comparing { it.second }))
-    do {
+    while (lineIndexToValueAtItsCurrentCursor.isNotEmpty()) {
         val minValueByItsLineIndex: Pair<Int, Int>? = lineIndexToValueAtItsCurrentCursor.pollFirst()
         if (minValueByItsLineIndex != null) {
             print("${minValueByItsLineIndex.second} ")
-            val cursorForLineIndex: MutableInt = lineIndexToCursor[minValueByItsLineIndex.first]!!
+            val cursorForLineIndex: MutableInt = lineIndexToCursor.getOrPut(minValueByItsLineIndex.first) { MutableInt() }
             val replacement: Int? = matrix[minValueByItsLineIndex.first].getOrNull(cursorForLineIndex.incrementAndGet())
             if (replacement != null) {
                 lineIndexToValueAtItsCurrentCursor.add(minValueByItsLineIndex.first to replacement)
             }
         }
-    } while (minValueByItsLineIndex != null)
+    }
 }
