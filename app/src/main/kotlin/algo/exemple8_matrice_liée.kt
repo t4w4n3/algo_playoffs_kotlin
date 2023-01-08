@@ -1,13 +1,15 @@
 package algo
 
 import java.util.Comparator.comparing
-import java.util.NavigableSet
-import java.util.TreeSet
+import java.util.PriorityQueue
 
 fun main() {
     val matrix: Array<IntArray> = arrayOf(
         intArrayOf(3, 7, 11, 13),
-        intArrayOf(1, 4, 12),
+        intArrayOf(3, 7, 11, 13),
+        intArrayOf(1, 4, 11, 11, 12),
+        intArrayOf(1, 4, 11, 11, 12),
+        intArrayOf(14, 15, 116, 2045),
         intArrayOf(14, 15, 116, 2045)
     )
 
@@ -25,18 +27,18 @@ private data class MutableInt(var value: Int = 0) {
 // On recommence jusqu'à ce que l'index soit vide
 fun printMatrixElementsInOrder(matrix: Array<IntArray>) {
     val lineIndexToCursor: MutableMap<Int, MutableInt> = mutableMapOf()
-    val lineIndexToValueAtItsCurrentCursor: NavigableSet<Pair<Int, Int>> = matrix
+    val lineIndexToValueAtItsCurrentCursor: PriorityQueue<Pair<Int, Int>> = matrix
         .asSequence()
         .mapIndexed { index, intArray -> index to intArray[0] }
-        .toCollection(TreeSet(comparing { it.second }))
+        .toCollection(PriorityQueue(matrix.size, comparing { it.second }))
     while (lineIndexToValueAtItsCurrentCursor.isNotEmpty()) {
-        val minValueByItsLineIndex: Pair<Int, Int>? = lineIndexToValueAtItsCurrentCursor.pollFirst()
+        val minValueByItsLineIndex: Pair<Int, Int>? = lineIndexToValueAtItsCurrentCursor.poll()
         if (minValueByItsLineIndex != null) {
             print("${minValueByItsLineIndex.second} ")
             val cursorForLineIndex: MutableInt = lineIndexToCursor.getOrPut(minValueByItsLineIndex.first) { MutableInt() }
             val replacement: Int? = matrix[minValueByItsLineIndex.first].getOrNull(cursorForLineIndex.incrementAndGet())
             if (replacement != null) {
-                lineIndexToValueAtItsCurrentCursor.add(minValueByItsLineIndex.first to replacement)
+                lineIndexToValueAtItsCurrentCursor.offer(minValueByItsLineIndex.first to replacement)
             }
         }
     }
