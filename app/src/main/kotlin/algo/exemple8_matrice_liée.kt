@@ -46,7 +46,8 @@ fun printMatrixElementsInOrder(matrix: Array<IntArray>) {
         if (lineIndexAndCursorForMinValue != null) {
             print("${matrix[lineIndexAndCursorForMinValue.first][lineIndexAndCursorForMinValue.second.get()]} ")
             val nextCursorForLineIndexOfCurrentMinValue: Int = lineIndexAndCursorForMinValue.second.incrementAndGet()
-            if (nextCursorForLineIndexOfCurrentMinValue < matrix[lineIndexAndCursorForMinValue.first].size) {
+            val theLineIndexOfPrintedValueHasNext = nextCursorForLineIndexOfCurrentMinValue < matrix[lineIndexAndCursorForMinValue.first].size
+            if (theLineIndexOfPrintedValueHasNext) {
                 lineIndexToCursor.offer(lineIndexAndCursorForMinValue.first to lineIndexAndCursorForMinValue.second)
             }
         }
