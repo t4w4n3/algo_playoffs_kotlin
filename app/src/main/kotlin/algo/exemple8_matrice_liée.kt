@@ -16,10 +16,9 @@ fun main() {
     printMatrixElementsInOrder(matrix)
 }
 
-private data class MutableInt(var value: Int = 0) : Comparable<MutableInt> {
+private data class MutableInt(var value: Int = 0) {
     fun incrementAndGet() = ++value
     fun get() = value
-    override fun compareTo(other: MutableInt): Int = get().compareTo(other.get())
 }
 
 // Maintient une PriorityQueue (équivalent d'une TreeList, soit une liste ordonnée suivant un Comparator) de l'index du premier élément non affiché de chaque ligne de la matrice.
@@ -27,6 +26,15 @@ private data class MutableInt(var value: Int = 0) : Comparable<MutableInt> {
 // Ensuite, on ajoute dans la queue l'index de l'élément suivant de la même ligne de la matrice que l'élément tout juste affiché.
 // Le nouvel index d'élément est automatiquement et efficacement placé au bon endroit dans la queue
 // On recommence jusqu'à ce que la queue soit vide
+//
+// Glossary :
+//
+//                 1 2 3 4 5
+//  lineIndex ---> 1 2 3 4 5
+//                     ^
+//                     |__________ cursor
+//                 1 2 3 4 5
+//
 fun printMatrixElementsInOrder(matrix: Array<IntArray>) {
     val lineIndexToCursor: PriorityQueue<Pair<Int, MutableInt>> = matrix
         .indices
@@ -34,12 +42,12 @@ fun printMatrixElementsInOrder(matrix: Array<IntArray>) {
         .map { lineIndex -> lineIndex to MutableInt() }
         .toCollection(PriorityQueue(matrix.size, comparing { matrix[it.first][it.second.value] }))
     while (lineIndexToCursor.isNotEmpty()) {
-        val minValueByItsLineIndex: Pair<Int, MutableInt>? = lineIndexToCursor.poll()
-        if (minValueByItsLineIndex != null) {
-            print("${matrix[minValueByItsLineIndex.first][minValueByItsLineIndex.second.get()]} ")
-            val replacementIndex: Int = minValueByItsLineIndex.second.incrementAndGet()
-            if (replacementIndex < matrix[minValueByItsLineIndex.first].size) {
-                lineIndexToCursor.offer(minValueByItsLineIndex.first to minValueByItsLineIndex.second)
+        val lineIndexAndCursorForMinValue: Pair<Int, MutableInt>? = lineIndexToCursor.poll()
+        if (lineIndexAndCursorForMinValue != null) {
+            print("${matrix[lineIndexAndCursorForMinValue.first][lineIndexAndCursorForMinValue.second.get()]} ")
+            val nextCursorForLineIndexOfCurrentMinValue: Int = lineIndexAndCursorForMinValue.second.incrementAndGet()
+            if (nextCursorForLineIndexOfCurrentMinValue < matrix[lineIndexAndCursorForMinValue.first].size) {
+                lineIndexToCursor.offer(lineIndexAndCursorForMinValue.first to lineIndexAndCursorForMinValue.second)
             }
         }
     }
